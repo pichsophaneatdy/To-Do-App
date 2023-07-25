@@ -1,10 +1,16 @@
 import mongoose from "mongoose";
 
+// Define Task Schema
 const TaskSchema = new mongoose.Schema({
-    task: String,
+    task: {
+        type: String,
+        require: true
+    },
     description: String, 
-    is_completed: {
+    isCompleted: {
+        type: Boolean,
         default: false
     }
 })
+// Create and Export Task Model
 export default mongoose.model("Task", TaskSchema) 
