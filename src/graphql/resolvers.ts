@@ -22,28 +22,28 @@ const resolvers = {
         }
     },
     Mutation: {
-        createTask: async (parent,{task, description, isCompleted}, contextValue) => {
+        createTask: async (parent,args:{task: string, description: string, isCompleted: boolean}, contextValue) => {
             try {
-                const newTask = new Task({task, description, isCompleted})
+                const newTask = new Task({task:args.task, description: args.description, isCompleted: args.isCompleted})
                 return await newTask.save()
             } catch(error) {
                 console.error("Error creating task:", error);
                 throw new Error("Failed to create task");
             }
         },
-        updateTaskStatus: async (parent, {id}, contextValue) => {
+        updateTaskStatus: async (parent, args: {id: string}, contextValue) => {
             try {
-                await Task.findOneAndUpdate({_id: id}, {isCompleted: true});
+                await Task.findOneAndUpdate({_id: args.id}, {isCompleted: true});
                 // Return most updated task info
-                return await Task.findById(id);
+                return await Task.findById(args.id);
             } catch(error){
                 console.error("Error updating task status:", error);
                 throw new Error("Failed to update task status");
             }
         },
-        deleteTask: async (parent, {id}, contextValue) => {
+        deleteTask: async (parent, args: {id: string}, contextValue) => {
             try {
-                return await Task.findByIdAndDelete(id);
+                return await Task.findByIdAndDelete(args.id);
             } catch(error) {
                 console.error("Error deleting task:", error);
             throw new Error("Failed to delete task");
