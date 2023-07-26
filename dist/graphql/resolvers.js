@@ -1,4 +1,4 @@
-import Task from "../database/taskModel.js";
+import Task from "../Database/taskModel.js";
 const resolvers = {
     Query: {
         // Fetching all tasks

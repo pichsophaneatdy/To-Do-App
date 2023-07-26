@@ -1,4 +1,4 @@
-import Task from "../database/taskModel.js";
+import Task from "../Database/taskModel.js";
 
 // Interface to define Task Object
 interface TaskInterface {

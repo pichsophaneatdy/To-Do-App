@@ -2,7 +2,7 @@ import { ApolloServer } from "@apollo/server";
 import {startStandaloneServer} from "@apollo/server/standalone";
 import dotenv from "dotenv";
 // Connect to MongoDB Function
-import connectDB from "./database/connectDB.js";
+import connectDB from "./Database/connectDB.js";
 // Schema and Resolvers
 import typeDefs from "./graphql/schema.js";
 import resolvers from "./graphql/resolvers.js";
