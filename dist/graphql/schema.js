@@ -1,8 +1,8 @@
 // typeDefs
 const typeDefs = `#graphql
     type Task {
-        id: ID
-        task: String
+        id: ID!
+        task: String!
         description: String
         isCompleted: Boolean
     }

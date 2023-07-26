@@ -1,6 +1,7 @@
 import Task from "../database/taskModel.js";
 const resolvers = {
     Query: {
+        // Fetching all tasks
         allTasks: async () => {
             try {
                 return await Task.find();
@@ -10,10 +11,10 @@ const resolvers = {
                 throw new Error("Failed to fetch tasks");
             }
         },
+        // Fetching active tasks
         activeTasks: async () => {
             try {
-                const activeTasks = await Task.find({ isCompleted: false });
-                return activeTasks;
+                return await Task.find({ isCompleted: false });
             }
             catch (error) {
                 console.error("Error fetching active tasks:", error);
@@ -22,6 +23,7 @@ const resolvers = {
         }
     },
     Mutation: {
+        // Create a new task
         createTask: async (parent, args, contextValue) => {
             try {
                 const newTask = new Task({
@@ -29,6 +31,7 @@ const resolvers = {
                     description: args.description,
                     isCompleted: args.isCompleted,
                 });
+                // Save new task to database and return it
                 return await newTask.save();
             }
             catch (error) {
@@ -36,6 +39,7 @@ const resolvers = {
                 throw new Error("Failed to create task");
             }
         },
+        // Update task status
         updateTaskStatus: async (parent, args, contextValue) => {
             try {
                 await Task.findOneAndUpdate({ _id: args.id }, { isCompleted: true });
@@ -47,8 +51,10 @@ const resolvers = {
                 throw new Error("Failed to update task status");
             }
         },
+        // Deleting task
         deleteTask: async (parent, args, contextValue) => {
             try {
+                // return the deleted task
                 return await Task.findByIdAndDelete(args.id);
             }
             catch (error) {
