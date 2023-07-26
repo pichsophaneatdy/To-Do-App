@@ -1,8 +1,17 @@
 import Task from "../database/taskModel.js";
 
+// Interface to define Task Object
+interface TaskInterface {
+    id: string,
+    task: string,
+    description?: string,
+    isCompleted?: boolean
+}
+
 const resolvers = {
     Query: {
-        allTasks: async () => {
+        // Fetching all tasks
+        allTasks: async (): Promise<TaskInterface[]> => {
             try {
                 return await Task.find();
             } catch(error) {
@@ -10,10 +19,10 @@ const resolvers = {
                 throw new Error("Failed to fetch tasks");
             }
         },
-        activeTasks: async () => {
+        // Fetching active tasks
+        activeTasks: async (): Promise<TaskInterface[]> => {
             try {
-                const activeTasks = await Task.find({isCompleted: false});
-                return activeTasks;
+                return await Task.find({isCompleted: false});
             } catch(error) {
                 console.error("Error fetching active tasks:", error);
                 throw new Error("Failed to fetch active tasks");
@@ -22,16 +31,23 @@ const resolvers = {
         }
     },
     Mutation: {
-        createTask: async (parent,args:{task: string, description: string, isCompleted: boolean}, contextValue) => {
+        // Create a new task
+        createTask: async (parent,args: { task: string; description: string; isCompleted: boolean }, contextValue) => {
             try {
-                const newTask = new Task({task:args.task, description: args.description, isCompleted: args.isCompleted})
-                return await newTask.save()
-            } catch(error) {
+                const newTask = new Task({
+                    task: args.task,
+                    description: args.description,
+                    isCompleted: args.isCompleted,
+                });
+                // Save new task to database and return it
+                return await newTask.save();
+            } catch (error) {
                 console.error("Error creating task:", error);
                 throw new Error("Failed to create task");
             }
         },
-        updateTaskStatus: async (parent, args: {id: string}, contextValue) => {
+        // Update task status
+        updateTaskStatus: async (parent,args: {id: string}, contextValue) => {
             try {
                 await Task.findOneAndUpdate({_id: args.id}, {isCompleted: true});
                 // Return most updated task info
@@ -41,12 +57,14 @@ const resolvers = {
                 throw new Error("Failed to update task status");
             }
         },
-        deleteTask: async (parent, args: {id: string}, contextValue) => {
+        // Deleting task
+        deleteTask: async (parent,args: {id: string}, contextValue) => {
             try {
+                // return the deleted task
                 return await Task.findByIdAndDelete(args.id);
             } catch(error) {
                 console.error("Error deleting task:", error);
-            throw new Error("Failed to delete task");
+                throw new Error("Failed to delete task");
             }
             
         }

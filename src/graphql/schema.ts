@@ -2,7 +2,7 @@
 const typeDefs = `#graphql
     type Task {
         id: ID!
-        task: String
+        task: String!
         description: String
         isCompleted: Boolean
     }
